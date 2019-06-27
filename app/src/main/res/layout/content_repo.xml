@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+		xmlns:android = "http://schemas.android.com/apk/res/android"
+		xmlns:tools = "http://schemas.android.com/tools"
+		xmlns:app = "http://schemas.android.com/apk/res-auto"
+		android:orientation = "vertical"
+		android:layout_width = "match_parent"
+		android:layout_height = "match_parent"
+		app:layout_behavior = "@string/appbar_scrolling_view_behavior"
+		tools:showIn = "@layout/activity_repo"
+		tools:context = ".View.UI.RepoActivity">
+
+	<ImageView
+			android:id = "@+id/iv_userAvatar"
+			android:layout_margin = "@dimen/fab_margin"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:src = "@drawable/im_avatar"
+			android:layout_gravity = "center"
+			android:adjustViewBounds = "true"
+			android:scaleType = "fitCenter"
+			/>
+
+	<TextView
+			android:id = "@+id/tv_username"
+			android:textSize = "22dp"
+			android:textColor = "#000"
+			android:layout_gravity = "center"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:text = "Username"/>
+
+	<LinearLayout
+			android:layout_gravity = "center"
+			android:orientation = "horizontal"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content">
+
+		<TextView
+				android:id = "@+id/tv_repo"
+				android:textSize = "20dp"
+				android:textColor = "#000"
+				android:layout_margin = "@dimen/fab_margin"
+				android:layout_gravity = "center"
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:text = "My Repository"/>
+
+		<TextView
+				android:id = "@+id/tv_fork"
+				android:textSize = "18dp"
+				android:textColor = "#000"
+				android:layout_gravity = "center"
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:text = "Fork 20"/>
+
+	</LinearLayout>
+
+	<TextView
+			android:id = "@+id/tv_lang"
+			android:textSize = "16dp"
+			android:textColor = "#000"
+			android:layout_gravity = "center"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:text = "Language"/>
+
+</LinearLayout>
