@@ -2,19 +2,33 @@ package com.example.taskgithub.Data.Models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 class Repo(
     val id: Int,
     val name: String,
-    val owner: Owner
+    val owner: Owner,
+    val forks:Int,
+    @SerializedName("default_branch")
+    val branch:String,
+    val language:String
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString(),
-        parcel.readParcelable(Owner::class.java.classLoader)
+        parcel.readParcelable(Owner::class.java.classLoader),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readString()
     )
 
-    override fun writeToParcel(p0: Parcel?, p1: Int) {
+    override fun writeToParcel(parcel: Parcel?, p1: Int) {
+        parcel?.writeInt(id)
+        parcel?.writeString(name)
+        parcel?.writeParcelable(owner,p1)
+        parcel?.writeInt(forks)
+        parcel?.writeString(branch)
+        parcel?.writeString(language)
     }
 
     override fun describeContents(): Int {

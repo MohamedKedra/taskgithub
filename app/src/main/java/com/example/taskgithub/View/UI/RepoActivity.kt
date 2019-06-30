@@ -20,13 +20,13 @@ class RepoActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         if (intent.hasExtra("repo")) {
-            var repo: Repo = intent.extras.getParcelable<Repo>("repo")
+            var repo: Repo = intent.extras.getParcelable("repo")
             Glide.with(this@RepoActivity).load(repo.owner.avatar).into(iv_userAvatar)
             tv_repo.text = repo.name
-        }
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            tv_fork.text = repo.forks.toString()+" Forks"
+            tv_lang.text = repo.language
+            tv_branch.text = repo.branch
+
         }
     }
 
