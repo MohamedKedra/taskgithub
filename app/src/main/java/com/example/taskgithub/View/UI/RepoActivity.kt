@@ -1,16 +1,12 @@
 package com.example.taskgithub.View.UI
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.taskgithub.Data.Models.Repo
 import com.example.taskgithub.R
-
 import kotlinx.android.synthetic.main.activity_repo.*
 import kotlinx.android.synthetic.main.content_repo.*
-import kotlinx.android.synthetic.main.content_repo.iv_userAvatar
-import kotlinx.android.synthetic.main.item_repo.*
 
 class RepoActivity : AppCompatActivity() {
 

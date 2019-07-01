@@ -3,16 +3,13 @@ package com.example.taskgithub.View.UI
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.SearchView
 import android.widget.Toast
-import com.example.taskgithub.ViewModels.MainViewModel
 import com.example.taskgithub.R
 import com.example.taskgithub.View.RepoAdapter
+import com.example.taskgithub.ViewModels.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
