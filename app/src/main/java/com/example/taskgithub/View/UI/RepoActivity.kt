@@ -17,12 +17,12 @@ class RepoActivity : AppCompatActivity() {
 
         if (intent.hasExtra("repo")) {
             var repo: Repo = intent.extras.getParcelable("repo")
-            Glide.with(this@RepoActivity).load(repo.owner.avatar).into(iv_userAvatar)
+            tv_username.text = repo.owner?.name
+            Glide.with(this@RepoActivity).load(repo.owner?.avatar).into(iv_userAvatar)
             tv_repo.text = repo.name
             tv_fork.text = repo.forks.toString()+" Forks"
             tv_lang.text = repo.language
             tv_branch.text = repo.branch
-
         }
     }
 

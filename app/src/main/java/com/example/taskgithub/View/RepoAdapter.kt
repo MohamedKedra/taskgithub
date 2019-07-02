@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.taskgithub.Data.Models.Repo
@@ -14,39 +15,141 @@ import com.example.taskgithub.R
 import com.example.taskgithub.View.UI.ProfileActivity
 import com.example.taskgithub.View.UI.RepoActivity
 
-class RepoAdapter(val repos: List<Repo>, val context: Context) :
-    RecyclerView.Adapter<RepoAdapter.RepoHolder>() {
+class RepoAdapter :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    lateinit var intent: Intent
+    private var isLoadingAdded: Boolean = false
+    private var repos: MutableList<Repo>
+    lateinit var context: Context
+    private val ITEM = 0
+    private val LOADING = 1
 
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): RepoHolder {
-        var view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_repo, parent, false)
-        return RepoHolder(view)
+    init {
+        repos = mutableListOf()
+    }
+
+    fun addRepos(repos: MutableList<Repo>) {
+        this.repos = repos
+    }
+
+    fun addContext(context: Context) {
+        this.context = context
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        var inflater = LayoutInflater.from(parent.context)
+        var holder: RecyclerView.ViewHolder? = null
+        when (viewType) {
+            ITEM -> {
+                val viewItem = inflater.inflate(R.layout.item_repo, parent, false)
+                holder = RepoHolder(viewItem)
+            }
+            LOADING -> {
+                val viewLoading = inflater.inflate(R.layout.item_progress, parent, false)
+                holder = LoadHolder(viewLoading)
+            }
+        }
+        return holder!!
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == repos.size - 1 && isLoadingAdded) LOADING else ITEM
     }
 
     override fun getItemCount(): Int = repos.size
 
-    override fun onBindViewHolder(holder: RepoHolder, position: Int) {
-        Glide.with(holder.itemView.context).load(repos[position].owner.avatar).into(holder.avatar)
-        holder.username.text = repos[position].owner.name
-        holder.repoName.text = repos[position].name
+    fun removeLoadingFooter() {
+        isLoadingAdded = false
 
-        holder.avatar.setOnClickListener {
-            intent = Intent(context, ProfileActivity::class.java)
-            intent.putExtra("username", repos[position].owner.name)
-            context.startActivity(intent)
-        }
-        holder.itemView.setOnClickListener {
-            intent = Intent(context, RepoActivity::class.java)
-            intent.putExtra("repo", repos[position])
-            context.startActivity(intent)
+        val position = repos.size - 1
+        val result = getItem(position)
+
+        if (result != null) {
+            repos.removeAt(position)
+            notifyItemRemoved(position)
         }
     }
 
-    class RepoHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private fun getItem(position: Int): Repo {
+        return repos[position]
+    }
 
-        val avatar = itemView.findViewById<ImageView>(R.id.iv_userAvatar)
-        val username = itemView.findViewById<TextView>(R.id.tv_username)
-        val repoName = itemView.findViewById<TextView>(R.id.tv_repoName)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+        when (getItemViewType(position)) {
+
+            ITEM -> {
+                val repoHolder = holder as RepoHolder
+                holder.setRepoData(repos)
+                Glide.with(repoHolder.itemView.context).load(repos[position].owner?.avatar).into(holder.avatar)
+                repoHolder.username.text = repos[position].owner?.name
+                repoHolder.repoName.text = repos[position].name
+                repoHolder.langauge.text = repos[position].language
+            }
+
+            LOADING -> {
+                val loadHolder = holder as LoadHolder
+                loadHolder.loading.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun add(r: Repo) {
+        repos.add(r)
+        notifyItemInserted(repos.size - 1)
+    }
+
+    fun addLoadingFooter() {
+        isLoadingAdded = true
+        add(Repo())
+    }
+
+    fun addAll(repoResults: List<Repo>) {
+        for (repo in repoResults) {
+            add(repo)
+        }
+    }
+
+    class RepoHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+
+        lateinit var intent: Intent
+        lateinit var allRepos: MutableList<Repo>
+        val avatar: ImageView = itemView.findViewById(R.id.iv_userAvatar)
+        val username: TextView = itemView.findViewById(R.id.tv_username)
+        val repoName: TextView = itemView.findViewById(R.id.tv_repoName)
+        val langauge: TextView = itemView.findViewById(R.id.tv_language)
+
+        init {
+            itemView.setOnClickListener(this)
+            avatar.setOnClickListener(this)
+        }
+
+        override fun onClick(view: View?) {
+
+            when (view?.id) {
+                R.id.iv_userAvatar -> {
+                    avatar.setOnClickListener {
+                        intent = Intent(itemView.context, ProfileActivity::class.java)
+                        intent.putExtra("username", allRepos[adapterPosition].owner?.name)
+                        itemView.context.startActivity(intent)
+                    }
+                }
+
+                itemView.id -> {
+                    intent = Intent(itemView.context, RepoActivity::class.java)
+                    intent.putExtra("repo", allRepos[adapterPosition])
+                    itemView.context.startActivity(intent)
+                }
+            }
+        }
+
+        fun setRepoData(repos: MutableList<Repo>) {
+            allRepos = repos
+        }
+    }
+
+    class LoadHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        val loading: ProgressBar = itemView.findViewById(R.id.pb_loadMore)
     }
 }

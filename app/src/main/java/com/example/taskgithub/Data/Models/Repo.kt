@@ -5,13 +5,13 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 class Repo(
-    val id: Int,
-    val name: String,
-    val owner: Owner,
-    val forks:Int,
+    val id: Int? = null,
+    val name: String? = null,
+    val owner: Owner? = null,
+    val forks:Int? = null,
     @SerializedName("default_branch")
-    val branch:String,
-    val language:String
+    val branch:String? = null,
+    val language:String? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -22,11 +22,13 @@ class Repo(
         parcel.readString()
     )
 
+
+
     override fun writeToParcel(parcel: Parcel?, p1: Int) {
-        parcel?.writeInt(id)
+        parcel?.writeInt(id!!)
         parcel?.writeString(name)
         parcel?.writeParcelable(owner,p1)
-        parcel?.writeInt(forks)
+        parcel?.writeInt(forks!!)
         parcel?.writeString(branch)
         parcel?.writeString(language)
     }

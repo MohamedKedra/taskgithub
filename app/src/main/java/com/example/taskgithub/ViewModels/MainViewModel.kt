@@ -15,28 +15,27 @@ import retrofit2.Response
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-
+    var pageSize: Int = 20
     var apiServices: ApiServices = Client.getInstance()
 
-    fun getAllRepos(text: String): LiveData<List<Repo>> {
-
+    fun getAllRepos(text: String,currentPage:Int): LiveData<List<Repo>> {
+        Log.d("cp",""+currentPage)
         var list: MutableLiveData<List<Repo>> = MutableLiveData()
-
-        apiServices.searchInRepos(text).enqueue(object : Callback<RepoResponse> {
+        apiServices.searchInRepos(text, pageSize, currentPage).enqueue(object : Callback<RepoResponse> {
             override fun onFailure(call: Call<RepoResponse>?, t: Throwable?) {
                 Log.d("response : ", t?.message)
             }
 
             override fun onResponse(call: Call<RepoResponse>?, response: Response<RepoResponse>?) {
-
                 if (response?.isSuccessful!!) {
-
-                    list.value = response.body().repos
+                    if (response.body().totalCount > 0) {
+                        list.value = response.body().repos
+                    }else{
+                        list.value = null
+                    }
                 }
             }
         })
         return list
     }
-
-
 }

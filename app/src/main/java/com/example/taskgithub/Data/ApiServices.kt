@@ -11,7 +11,7 @@ import retrofit2.http.Query
 interface ApiServices {
 
     @GET("search/repositories")
-    fun searchInRepos(@Query("q") text: String): Call<RepoResponse>
+    fun searchInRepos(@Query("q") text: String,@Query("per_page") pageSize:Int,@Query("page")pageNumber:Int): Call<RepoResponse>
 
     @GET("users/{username}")
     fun getUserInfo(@Path("username") username: String): Call<Owner>
