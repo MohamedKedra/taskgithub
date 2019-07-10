@@ -15,6 +15,8 @@ import com.example.taskgithub.R
 import com.example.taskgithub.View.UI.ProfileActivity
 import com.example.taskgithub.View.UI.RepoActivity
 
+//nice job ,
+//todo find better way to handel paginations like
 class RepoAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -104,6 +106,8 @@ class RepoAdapter :
         add(Repo())
     }
 
+    //todo each time you call add(repo) the notifyItemInserted(repos.size - 1) will be fired
+    // you need to minize the number of notify to avoid ui refreshing hedach
     fun addAll(repoResults: List<Repo>) {
         for (repo in repoResults) {
             add(repo)

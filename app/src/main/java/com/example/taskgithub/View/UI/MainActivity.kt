@@ -49,6 +49,9 @@ class MainActivity : AppCompatActivity() {
             if (text?.isNotEmpty()!!) {
 
                 loadFirstPage(text)
+                //the repo list addOnScrollListener will happen each time the query sunmitted
+                //so each time the query submitted you will attach diffrent scroll listenr to the listview
+                //todo nove the listener initalize out side the query submitted
                 rv_repos.addOnScrollListener(object : PaginationRecycler(layoutManager) {
                     override fun getTotalPageCount(): Int = TOTAL_PAGES
 
@@ -75,12 +78,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //load first page and load next page is duplicates instead
+    //their should be method called loadReposPage(query , pageNumber) ;
+    //todo fix it
     fun loadFirstPage(text: String) {
         mainViewModel.getAllRepos(text, currentPage).observe(this@MainActivity,
             Observer { t ->
                 if (t != null) {
                     pb_progressbar.visibility = View.GONE
                     adapter.addAll(t!!)
+                    //todo list instialized with adapter should be moved outside the observer
+                    //because each time the observer called this instialize will happen again
                     rv_repos.adapter = adapter
                     rv_repos.layoutManager = layoutManager
                     rv_repos.itemAnimator = DefaultItemAnimator()

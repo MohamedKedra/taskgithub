@@ -3,6 +3,7 @@ package com.example.taskgithub.View.UI
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 
+//nice abstraction , but what if the list is empty "has 0 items" ??!!
 abstract class PaginationRecycler(val layoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
